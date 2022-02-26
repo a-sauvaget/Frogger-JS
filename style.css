@@ -1,0 +1,49 @@
+:root {
+  /* SIZES */
+  --grid-height: 180px;
+  --grid-width: 180px;
+
+  /* COLORS */
+  --color-black: #000000;
+  --color-lightGray: #d3d3d3;
+  --color-red: #ff0000;
+  --color-blue: #0000ff;
+  --color-lightBlue: #add8e6;
+  --color-brown: #964b00;
+  --color-green: #00ff00;
+}
+
+.grid {
+  border: 1px solid var(--color-black);
+  height: var(--grid-height);
+  width: var(--grid-width);
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid div {
+  height: calc(var(--grid-height) / 9);
+  width: calc(var(--grid-width) / 9);
+}
+
+.starting-block {
+  background-color: var(--color-blue);
+}
+
+.ending-block {
+  background-color: var(--color-red);
+}
+
+.log-left,
+.log-right {
+  background-color: var(--color-lightBlue);
+}
+
+.car-left,
+.car-right {
+background-color:  var(--color-lightGray);
+}
+
+.frog {
+  background-color:  var(--color-green);
+}
