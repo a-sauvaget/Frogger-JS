@@ -34,10 +34,6 @@
   background-color: var(--color-red);
 }
 
-.frog {
-  background-color:  var(--color-green);
-}
-
 .l1,
 .l2,
 .l3 {
@@ -50,10 +46,14 @@
 }
 
 .c1 {
-  background-color: var(--color-black)
+  background-color: var(--color-black);
 }
 
 .c2,
 .c3 {
   background-color: var(--color-lightGray);
+}
+
+.frog {
+  background-color: var(--color-green);
 }

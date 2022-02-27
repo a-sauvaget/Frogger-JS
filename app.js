@@ -2,7 +2,7 @@ const GRID_WIDTH = 9;
 const GRID_HEIGHT = 9;
 
 const timeLeftDisplay = document.getElementById('time-left');
-const scoreDisplay = document.getElementById('score');
+const resultDisplay = document.getElementById('result');
 const startPauseButton = document.getElementById('start-pause-button');
 
 const squares = document.querySelectorAll('.grid div');
@@ -13,10 +13,11 @@ const logsRight = document.querySelectorAll('.log-right');
 const carsLeft = document.querySelectorAll('.car-left');
 const carsRight = document.querySelectorAll('.car-right');
 
-document.addEventListener('keyup', moveFrog);
-
 // Position de départ de la grenouille
 let currentIndex = Math.ceil(GRID_HEIGHT * GRID_WIDTH - (GRID_WIDTH / 2 + 1));
+let timeId;
+let outComeTimerId;
+let currentTime = 20;
 
 function moveFrog(e) {
   squares[currentIndex].classList.remove('frog');
@@ -49,14 +50,18 @@ function moveFrog(e) {
   squares[currentIndex].classList.add('frog');
 }
 
-function autoMoveLogs() {
+function autoMoveElements() {
+  currentTime--;
+  timeLeftDisplay.textContent = currentTime;
   logsLeft.forEach((logLeft) => moveLogLeft(logLeft));
   logsRight.forEach((logRight) => moveLogRight(logRight));
-}
-
-function autoMoveCars() {
   carsLeft.forEach((carLeft) => moveCarLeft(carLeft));
   carsRight.forEach((carRight) => moveCarRight(carRight));
+}
+
+function checkOutComes() {
+  lose();
+  win();
 }
 
 function moveLogLeft(logLeft) {
@@ -143,5 +148,40 @@ function moveCarRight(carRight) {
   }
 }
 
-setInterval(autoMoveLogs, 1000);
-setInterval(autoMoveCars, 1000);
+function lose() {
+  if (
+    squares[currentIndex].classList.contains('c1') ||
+    squares[currentIndex].classList.contains('l4') ||
+    squares[currentIndex].classList.contains('l5') ||
+    currentTime <= 0
+  ) {
+    resultDisplay.textContent = "C'est perdu ! 😞";
+    document.removeEventListener('keyup', moveFrog);
+    clearInterval(timeId);
+    clearInterval(outComeTimerId);
+    squares[currentIndex].classList.remove('frog');
+  }
+}
+
+function win() {
+  if (squares[currentIndex].classList.contains('ending-block')) {
+    resultDisplay.textContent = "C'est gagné ! 😊 ";
+    document.removeEventListener('keyup', moveFrog);
+    clearInterval(timeId);
+    clearInterval(outComeTimerId);
+  }
+}
+
+startPauseButton.addEventListener('click', () => {
+  if (timeId) {
+    clearInterval(timeId);
+    clearInterval(outComeTimerId);
+    outComeTimerId = null;
+    timerId = null;
+    document.removeEventListener('keyup', moveFrog);
+  } else {
+    timeId = setInterval(autoMoveElements, 1000);
+    outComeTimerId = setInterval(checkOutComes, 50);
+    document.addEventListener('keyup', moveFrog);
+  }
+});
